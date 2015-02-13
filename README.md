@@ -1,0 +1,2 @@
+# Nobzy
+Yatzy dialect
