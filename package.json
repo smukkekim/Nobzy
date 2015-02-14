@@ -1,7 +1,7 @@
 {
   "name": "Nobzy",
   "version": "0.1.0",
-  "description": "Yatzee dialect",
+  "description": "Yahtzee dialect",
   "main": "server.js",
   "scripts": {
     "test": "./node_modules/.bin/karma start --single-run"

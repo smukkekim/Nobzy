@@ -1,2 +1,2 @@
 # Nobzy
-Yatzee dialect
+Yahtzee dialect
