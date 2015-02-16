@@ -7,10 +7,12 @@
   var cup = {};
 
   game.init = function() {
-    var i;
     cup = new Cup();
 
     cup.throw();
+
+    cup.setValues([3,3,3,5,3]);
+
     displayValues();
   };
 

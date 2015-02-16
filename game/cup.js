@@ -5,8 +5,9 @@
   var Die = require('./die.js').Die;
 
   var Cup = function() {
+    var i;
     this.dice = [];
-    for (var i = 1; i <= 5; i++) {
+    for (i = 0; i < 5; i++) {
       this.dice.push(new Die(6));
     }
     this.score = {
@@ -44,6 +45,17 @@
     }
   };
 
+  Cup.prototype.setValues = function(values) {
+    if (!Array.isArray(values)) {
+      values = [values,values,values,values,values];
+    }
+    for (var i = 0; i < 5; i++) {
+      if (typeof values[i] !== 'undefined' && !isNaN(values[i]) && values[i] <= 6 && values[i] >= 1) {
+        this.dice[i].value = values[i];
+      }
+    }
+  };
+
   Cup.prototype.calculateScore = function() {
     var valueCount = new Array(7).join(1).split('').map(function() { return 0; }),
         i,
@@ -71,7 +83,6 @@
     this.score.yahtzee = maxOfAKind === 5 ? maxOfAKindValue === 1 ? 100 : 5 * maxOfAKindValue : 0;
     this.score.fourOfAKind = maxOfAKind >= 4 ? 4 * maxOfAKindValue : 0;
     this.score.threeOfAKind = maxOfAKind >= 3 ? 3 * maxOfAKindValue : 0;
-    this.score.pair = maxOfAKind >= 2 ? 2 * maxOfAKindValue : 0;
     this.score.smallStraight = maxOfAKind === 1 && valueCount[5] === 0 ? 15 : 0;
     this.score.largeStraight = maxOfAKind === 1 && valueCount[0] === 0 ? 20 : 0;
     if (maxOfAKind === 3) {
@@ -80,11 +91,18 @@
         this.score.fullHouse = this.score.threeOfAKind + (2 * (pairIndex + 1));
       }
     }
-    if (maxOfAKind === 2) {
-      pairIndex = valueCount.indexOf(2);
-      this.score.twoPair = 2 * (pairIndex + 1);
-      pairIndex = valueCount.indexOf(2, pairIndex + 1);
-      this.score.twoPair = pairIndex > -1 ? this.score.twoPair + (2 * (pairIndex + 1)) : 0;
+    if (maxOfAKind >= 2) {
+      if (maxOfAKind > 3) {
+        this.score.pair = 2 * maxOfAKindValue;
+      } else {
+        pairIndex = maxOfAKind === 3 ? valueCount.indexOf(3) : valueCount.indexOf(2);
+        this.score.pair = pairIndex + 1;
+        pairIndex = valueCount.indexOf(2, maxOfAKind === 3 ? 0 : pairIndex + 1);
+        if (pairIndex > -1) {
+          this.score.twoPair = (this.score.pair * 2) + ((pairIndex + 1) * 2);
+          this.score.pair = Math.max(this.score.pair, pairIndex + 1) * 2;
+        }
+      }
     }
 
     return this.score;
