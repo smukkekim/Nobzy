@@ -11,7 +11,7 @@
 
     cup.throw();
 
-    cup.setValues([3,3,3,5,3]);
+    //cup.setValues([2,3,3,4,6]);
 
     displayValues();
   };

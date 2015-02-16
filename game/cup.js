@@ -80,7 +80,7 @@
     for (i = 0; i < 6; i++) {
       this.score.chance += (i + 1) * valueCount[i];
     }
-    this.score.yahtzee = maxOfAKind === 5 ? maxOfAKindValue === 1 ? 100 : 5 * maxOfAKindValue : 0;
+    this.score.yahtzee = maxOfAKind === 5 ? maxOfAKindValue === 1 ? 100 : 50 + (5 * maxOfAKindValue) : 0;
     this.score.fourOfAKind = maxOfAKind >= 4 ? 4 * maxOfAKindValue : 0;
     this.score.threeOfAKind = maxOfAKind >= 3 ? 3 * maxOfAKindValue : 0;
     this.score.smallStraight = maxOfAKind === 1 && valueCount[5] === 0 ? 15 : 0;
@@ -96,11 +96,11 @@
         this.score.pair = 2 * maxOfAKindValue;
       } else {
         pairIndex = maxOfAKind === 3 ? valueCount.indexOf(3) : valueCount.indexOf(2);
-        this.score.pair = pairIndex + 1;
+        this.score.pair = 2 * (pairIndex + 1);
         pairIndex = valueCount.indexOf(2, maxOfAKind === 3 ? 0 : pairIndex + 1);
         if (pairIndex > -1) {
-          this.score.twoPair = (this.score.pair * 2) + ((pairIndex + 1) * 2);
-          this.score.pair = Math.max(this.score.pair, pairIndex + 1) * 2;
+          this.score.twoPair = this.score.pair + ((pairIndex + 1) * 2);
+          this.score.pair = 2 * Math.max(this.score.pair, (pairIndex + 1) * 2);
         }
       }
     }
